@@ -1,0 +1,48 @@
+@startuml
+' FireRescue GIS — UML Use Case Diagram
+left to right direction
+skinparam backgroundColor #FFFFFF
+skinparam usecase {
+  BackgroundColor #EFF6FF
+  BorderColor #3B82F6
+  FontColor #182B45
+}
+skinparam actorStyle stickman
+
+actor "Viewer" as Viewer
+actor "Operator" as Operator
+actor "Administrator" as Admin
+actor "Routing API" as RoutingAPI
+
+Operator --|> Viewer
+Admin --|> Operator
+
+rectangle "FireRescue GIS System (Simulation Only)" {
+  usecase "Log In / Log Out" as UC01
+  usecase "View Interactive GIS Map" as UC02
+  usecase "View Incident Details & History" as UC03
+  usecase "Monitor Simulation Updates" as UC04
+  usecase "View Dashboard Statistics" as UC05
+  usecase "Create Simulated Fire Incident" as UC06
+  usecase "Update Incident Status" as UC07
+  usecase "Explore Nearby Fictional Resources" as UC08
+  usecase "Calculate & Compare Road Routes" as UC09
+  usecase "Manage Fictional Resources" as UC10
+  usecase "Manage Simulation Scenarios" as UC11
+  usecase "Manage User Accounts" as UC12
+}
+
+Viewer -- UC01
+Viewer -- UC02
+Viewer -- UC03
+Viewer -- UC04
+Viewer -- UC05
+Operator -- UC06
+Operator -- UC07
+Operator -- UC08
+Operator -- UC09
+Admin -- UC10
+Admin -- UC11
+Admin -- UC12
+RoutingAPI -- UC09
+@enduml

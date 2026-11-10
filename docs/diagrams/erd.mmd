@@ -1,0 +1,90 @@
+%% FireRescue GIS — database draft v1.0
+%% SIMULATION ONLY. All incident/resource records are fictional.
+erDiagram
+    USERS |o--o{ SCENARIOS : creates
+    USERS |o--o{ FIRE_INCIDENTS : reports
+    USERS |o--o{ INCIDENT_HISTORY : changes
+    SCENARIOS ||--o{ FIRE_STATIONS : contains
+    SCENARIOS ||--o{ FIRE_HYDRANTS : contains
+    SCENARIOS ||--o{ FIRE_INCIDENTS : contains
+    FIRE_STATIONS ||--o{ FIRE_TRUCKS : houses
+    FIRE_STATIONS ||--o{ ROUTE_RESULTS : "route origin"
+    FIRE_INCIDENTS ||--o{ INCIDENT_HISTORY : records
+    FIRE_INCIDENTS ||--o{ ROUTE_RESULTS : "route destination"
+    FIRE_INCIDENTS ||--o{ INCIDENT_ASSIGNMENTS : has
+    FIRE_TRUCKS ||--o{ INCIDENT_ASSIGNMENTS : allocated_to
+
+    USERS {
+        uuid id PK
+        string name
+        string email UK
+        string password_hash
+        string role
+        datetime created_at
+    }
+    SCENARIOS {
+        uuid id PK
+        uuid created_by FK "nullable for seeded scenarios"
+        string name
+        string description
+        string status
+        datetime created_at
+    }
+    FIRE_STATIONS {
+        uuid id PK
+        uuid scenario_id FK
+        string name
+        float latitude
+        float longitude
+        string status
+    }
+    FIRE_TRUCKS {
+        uuid id PK
+        uuid station_id FK
+        string vehicle_code
+        string status
+    }
+    FIRE_HYDRANTS {
+        uuid id PK
+        uuid scenario_id FK
+        string hydrant_code
+        float latitude
+        float longitude
+        string status
+    }
+    FIRE_INCIDENTS {
+        uuid id PK
+        uuid scenario_id FK
+        uuid created_by FK "nullable for simulated events"
+        string incident_code
+        float latitude
+        float longitude
+        string severity
+        string status
+        datetime reported_at
+    }
+    INCIDENT_HISTORY {
+        uuid id PK
+        uuid incident_id FK
+        uuid user_id FK "nullable for system events"
+        string old_status
+        string new_status
+        datetime changed_at
+    }
+    ROUTE_RESULTS {
+        uuid id PK
+        uuid incident_id FK
+        uuid station_id FK
+        float distance_m
+        float duration_s
+        json route_geometry
+        string routing_provider
+        datetime calculated_at
+    }
+    INCIDENT_ASSIGNMENTS {
+        uuid id PK
+        uuid incident_id FK
+        uuid truck_id FK
+        string status
+        datetime assigned_at
+    }
